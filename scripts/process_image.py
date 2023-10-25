@@ -17,7 +17,9 @@ import json
 
 import torchxrayvision as xrv
 import warnings
-warnings.filterwarnings("ignore")
+from io import StringIO
+
+warnings.filterwarnings("ignore", message="Warning: Input size .* is not the native resolution .* for this model. A resize will be performed but this could impact performance.")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', type=str, default="", help='')
@@ -29,6 +31,11 @@ parser.add_argument('-resize', default=False, help='', action='store_true')
 
 cfg = parser.parse_args()
 
+# Save the original stdout
+original_stdout = sys.stdout
+
+# Redirect stdout to a StringIO object
+sys.stdout = StringIO()
 
 img = skimage.io.imread(cfg.img_path)
 img = xrv.datasets.normalize(img, 255)  
@@ -78,9 +85,22 @@ else:
 
 results = {'preds': {...}}
 
-results_json = json.dumps(output)
+results_json = json.dumps(output, indent=4)
 
 with open('analysis_results.json', 'w') as f:
     f.write(results_json)
+
+# Get the content of stdout
+stdout_content = sys.stdout.getvalue()
+
+# Restore the original stdout
+sys.stdout = original_stdout
+
+# Filter out the warning message
+filtered_content = stdout_content.replace("Warning: Input size (222x222) is not the native resolution (224x224) for this model. A resize will be performed but this could impact performance.\n", "")
+
+# Print the remaining content
+print(results_json)
+
     
    
