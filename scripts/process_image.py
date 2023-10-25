@@ -16,6 +16,8 @@ import torchvision, torchvision.transforms
 
 import torchxrayvision as xrv
 
+print("Running process_image.py")
+
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', type=str, default="", help='')
 parser.add_argument('img_path', type=str)
