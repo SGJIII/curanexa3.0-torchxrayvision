@@ -13,10 +13,11 @@ import pprint
 import torch
 import torch.nn.functional as F
 import torchvision, torchvision.transforms
+import json
 
 import torchxrayvision as xrv
-
-print("Running process_image.py")
+import warnings
+warnings.filterwarnings("ignore")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-f', type=str, default="", help='')
@@ -68,11 +69,18 @@ with torch.no_grad():
         output["feats"] = list(feats.cpu().detach().numpy().reshape(-1))
 
     preds = model(img).cpu()
-    output["preds"] = dict(zip(xrv.datasets.default_pathologies,preds[0].detach().numpy()))
+    output["preds"] = dict(zip(xrv.datasets.default_pathologies, map(float, preds[0].detach().numpy())))
     
 if cfg.feats:
     print(output)
 else:
     pprint.pprint(output)
+
+results = {'preds': {...}}
+
+results_json = json.dumps(output)
+
+with open('analysis_results.json', 'w') as f:
+    f.write(results_json)
     
    

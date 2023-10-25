@@ -469,7 +469,7 @@ def fix_resolution(x, resolution: int, model: nn.Module):
 
     if (x.shape[2] != resolution) | (x.shape[3] != resolution):
         if not hash(model) in warning_log:
-            print("Warning: Input size ({}x{}) is not the native resolution ({}x{}) for this model. A resize will be performed but this could impact performance.".format(x.shape[2], x.shape[3], resolution, resolution))
+            warnings.warn("Input size ({}x{}) is not the native resolution ({}x{}) for this model. A resize will be performed but this could impact performance.".format(x.shape[2], x.shape[3], resolution, resolution))
             warning_log[hash(model)] = True
         return model.upsample(x)
     return x
