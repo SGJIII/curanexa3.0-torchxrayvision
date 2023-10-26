@@ -6,3 +6,4 @@ __pycache__
 *.png
 *.DS_Store
 venv/
+venv_new/
