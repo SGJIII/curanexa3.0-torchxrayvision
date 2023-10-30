@@ -48,3 +48,31 @@ _.pyo
 
 **pycache**/
 .pytest_cache/
+
+# Ignore the following files and directories:
+
+.git/
+.gitignore
+**pycache**/
+_.pyc
+_.pyo
+_.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+_.orig
+_.log
+_.pot
+_.pyc
+_.pyo
+\*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+venv_new.bak/
